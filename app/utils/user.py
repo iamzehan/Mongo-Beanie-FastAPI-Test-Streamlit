@@ -21,7 +21,7 @@ class User:
                 # Make POST request to the API endpoint
                 response = requests.post(api_endpoint, data=form_data)
                 data = response.json()
-                st.write(data)
+
                 # Check if the request was successful
                 if response.status_code == 200:
                     st.success("Login successful!")
@@ -50,6 +50,7 @@ class User:
             
                 
     def show_profile(access_token, API_URL):
+
         # API endpoint
         api_endpoint = f"{API_URL}/user/me"  # replace with your actual API endpoint
 
@@ -62,10 +63,14 @@ class User:
         # Check if the request was successful
         if response.status_code == 200:
             user_info = response.json()
-            
-            st.write("Username:", user_info["username"])
-            st.write("Full name:", user_info["full_name"])
-            st.write("Email:", user_info["email"])
+            with st.container(border=True):
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.image("https://ziaulkarim.netlify.app/profile.jpg", use_column_width=True)
+                with col2:
+                    st.write("<b>Username:</b>", user_info["username"], unsafe_allow_html=True)
+                    st.write("<b>Name:</b>", user_info["full_name"], unsafe_allow_html=True)
+                    st.write("<b>Email:</b>", user_info["email"], unsafe_allow_html=True)
             # Add more user information fields as needed
         elif response.status_code == 401:
             st.error("Unauthorized. Please login")
@@ -79,5 +84,3 @@ class User:
         else:
             st.error("No pictures yet")
         
-            
-    
