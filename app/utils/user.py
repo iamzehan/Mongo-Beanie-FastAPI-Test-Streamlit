@@ -2,6 +2,11 @@ import requests
 import streamlit as st
 from utils.blogs import Blog
 from email_validator import validate_email
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+DEFAULT_AVATAR = os.environ["DEFAULT_AVATAR"]
 
 class User:
     def get_headers(access_token):
@@ -87,7 +92,7 @@ class User:
             with st.container(border=True):
                 col1, _, col3 = st.columns([3, 3, 4])
                 with col1:
-                    st.image("https://cdn-icons-png.flaticon.com/512/1053/1053244.png", use_column_width=True)
+                    st.image(F"{DEFAULT_AVATAR}", use_column_width=True)
                     st.divider()
                     edit = st.button("✏️ Edit Profile", type="primary", use_container_width=True)
                 with col3:

@@ -3,6 +3,12 @@ import time
 from datetime import datetime
 import streamlit as st
 
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+DEFAULT_AVATAR = os.environ["DEFAULT_AVATAR"]
+
 class Blog:
 
         # ----- Returning formatted date ----- #
@@ -48,7 +54,11 @@ class Blog:
             comments = response.json()
             for comment in comments:
                 st.divider()
-                st.write(f"<span><img src='https://cdn-icons-png.flaticon.com/512/1053/1053244.png' width=20 height=20 style='vertical-align:middle'/> <b>{comment['owner']}</b></span>", unsafe_allow_html=True)
+                st.write(f"""<span>
+                            <img src='{DEFAULT_AVATAR}' width=20 height=20 style='vertical-align:middle'/> 
+                            <b>{comment['owner']}</b>
+                         </span>""",
+                         unsafe_allow_html=True)
                 st.write(Blog.format_date(comment['date']))
                 st.write(comment["content"])
                 st.divider()
