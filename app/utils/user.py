@@ -114,7 +114,7 @@ class User:
                         show_user_info(user_info)
                         
             # --- Adding Blog Post from Profile Page --- #
-            Blog.add_blog_post(headers=headers, API_URL=API_URL)
+            posted = Blog.add_blog_post(headers=headers, API_URL=API_URL)
             
             # --- Navigating through different options in profile page --- #
             with st.container(border=True):
@@ -124,7 +124,7 @@ class User:
                 with col3:
                     pictures = st.button("Pictures 🖼️", use_container_width=True)
             
-            if my_posts:            
+            if my_posts or posted:            
                 Blog.show_my_blogs(headers, API_URL)
             if pictures:
                 st.error("No pictures yet")
