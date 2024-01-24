@@ -57,7 +57,7 @@ class User:
                     st.success("Passwords match")
             else:
                 st.error("Please enter valid password")
-                  
+                    
     def show_profile(access_token, API_URL):
         
         def show_user_info(user_info):
@@ -126,6 +126,7 @@ class User:
             
             if my_posts or posted:            
                 Blog.show_my_blogs(headers, API_URL)
+                
             if pictures:
                 st.error("No pictures yet")
             
