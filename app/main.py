@@ -6,12 +6,12 @@ from dotenv import load_dotenv
 def main(API_URL):
     with st.sidebar:
         pages = st.selectbox(label="Pages", options=["Login", "Profile", "Sign up"])
-        if pages== "Login":
-            try:
-                if st.session_state.access_token:
-                    st.success("You're already logged in!")                    
-            except:
-                User.login(API_URL)
+    if pages== "Login":
+        try:
+            if st.session_state.access_token:
+                st.success("You're already logged in!")                    
+        except:
+            User.login(API_URL)
     if pages == "Sign up":
         try:
             if st.session_state.access_token:
@@ -31,12 +31,3 @@ if __name__ == "__main__":
     load_dotenv()
     API_URL = os.environ['API_URL']
     main(API_URL)
-    
-
-        
-        
-    
-
-
-    
-        
