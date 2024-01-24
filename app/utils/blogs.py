@@ -56,6 +56,30 @@ class Blog:
                 st.write(comment["content"])
                 st.divider()
                 
+            # ----- Add comment to a post ----- #
+    def add_comment(API_URL, headers, article_id):
+        with st.form(key=f"{article_id}", border=False, clear_on_submit=True):
+            form_data = {
+                "article_id":article_id,
+                "content":None
+                }
+            
+            form_data["content"]=st.text_area("Add comment: ",
+                                              placeholder="Add a comment...",
+                                              key=f"{article_id}_comment",
+                                              label_visibility="collapsed")
+            post_comment = st.form_submit_button(":green[Comment]", use_container_width=True)
+            
+            if post_comment:
+                api_endpoint = f"{API_URL}/blogs/comments/create/"
+                response = requests.post(api_endpoint, data=form_data, headers=headers)
+                if response.status_code == 200:
+                    return True
+                elif response.status_code == 401:
+                        st.error("Comment failed")
+                else:
+                    st.error(f"Error: {response.status_code}")
+
             # ----- Show your own blogs in Profile ----- #
     def show_my_blogs(headers, API_URL):
         api_endpoint = f"{API_URL}/blogs/my_posts/all"
@@ -73,9 +97,13 @@ class Blog:
                                 st.write(Blog.format_date(post['date']))
                                 st.write(f"@{post['author']}")
                                 st.text(post["content"])
+                                commented=Blog.add_comment(API_URL,headers=headers, article_id=post['_id'])
                                 with st.expander("Comments", expanded=False):
-                                    Blog.show_comments(API_URL,article_id=post['_id'])
-                                    
+                                    if commented:
+                                        Blog.show_comments(API_URL,article_id=post['_id'])
+                                    else:
+                                        Blog.show_comments(API_URL, article_id=post['_id'])
+                                
                         
             elif response.status_code == 404:
                 st.error(response.json()["detail"])
