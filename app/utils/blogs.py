@@ -21,7 +21,7 @@ class Blog:
     def add_blog_post(headers, API_URL):
         
         with st.form("Blog Post Form", clear_on_submit=True):
-            st.title("Post Something!")
+            st.write("<center><h1> Post Something! </h1></center>", unsafe_allow_html=True)
             form_data = {"title": None, "content":None}
             form_data["title"] = st.text_input("Title:",
                                                placeholder="Title",
@@ -34,14 +34,7 @@ class Blog:
                 api_endpoint= f"{API_URL}/blogs/create"
                 response = requests.post(api_endpoint, data=form_data, headers=headers)
                 if response.status_code == 200:
-                    data = response.json()["blog"]
-                    with st.container(border=True):
-                        with st.spinner("Loading.."):
-                            time.sleep(1)
-                            st.header(data["title"], divider=True)
-                            st.write(Blog.format_date(data['date']))
-                            st.write(f"@{data['author']}")
-                            st.text(data["content"])
+                    return True
                 elif response.status_code == 401:
                     st.error("Post failed")
                 else:
@@ -55,9 +48,9 @@ class Blog:
             for comment in comments:
                 st.divider()
                 st.write(f"""<span>
-                            <img src='{DEFAULT_AVATAR}' width=20 height=20 style='vertical-align:middle'/> 
-                            <b>{comment['owner']}</b>
-                         </span>""",
+                                <img src='{DEFAULT_AVATAR}' width=20 height=20 style='vertical-align:middle'/> 
+                                <b>{comment['owner']}</b>
+                            </span>""",
                          unsafe_allow_html=True)
                 st.write(Blog.format_date(comment['date']))
                 st.write(comment["content"])
@@ -77,7 +70,6 @@ class Blog:
                             with st.spinner("Loading.."):
                                 time.sleep(1)
                                 st.header(post["title"], divider=True)
-                                #date = datetime.strptime(post["date"], "%Y-%m-%dT%H:%M:%S.%f")
                                 st.write(Blog.format_date(post['date']))
                                 st.write(f"@{post['author']}")
                                 st.text(post["content"])
